@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCommunityRequest;
-use App\Http\Requests\UpdateCommunityRequest;
+use App\Http\Requests\Community\StoreCommunityRequest;
+use App\Http\Requests\Community\UpdateCommunityRequest;
 use App\Models\Community;
 use App\Models\Topic;
 
@@ -38,7 +38,10 @@ class CommunityController extends Controller
      */
     public function store(StoreCommunityRequest $request)
     {
-        //
+        $community = Community::create($request->validated() + ['user_id'=>auth()->id()]);
+        $community->topics()->attach($request->topics);
+
+        return to_route('communities.show', $community);
     }
 
     /**
@@ -49,7 +52,7 @@ class CommunityController extends Controller
      */
     public function show(Community $community)
     {
-        //
+        return $community->name;
     }
 
     /**
