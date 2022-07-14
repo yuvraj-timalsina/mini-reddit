@@ -16,7 +16,9 @@ class CommunityController extends Controller
      */
     public function index()
     {
-        //
+        $communities = Community::where('user_id', auth()->id())->get();
+
+        return view('communities.index', compact('communities'));
     }
 
     /**
