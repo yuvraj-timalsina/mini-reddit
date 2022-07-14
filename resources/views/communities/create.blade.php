@@ -49,12 +49,13 @@
                             <div class="row mb-3">
                                 <label for="topics"
                                        class="col-md-4 col-form-label text-md-end">{{ __('Topics') }}</label>
-
                                 <div class="col-md-6">
-                                    @foreach($topics as $topic)
-                                        <input type="checkbox" name="topics[]" id="topics" value="{{$topic->id}}"/>{{$topic->name}}
-                                        <br>
-                                    @endforeach
+
+                                    <select class="form-control select2" name="topics[]" multiple id="topics">
+                                        @foreach($topics as $topic)
+                                            <option value="{{$topic->id}}">{{$topic->name}} </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 
