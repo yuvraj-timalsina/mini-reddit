@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCommunityRequest;
 use App\Http\Requests\UpdateCommunityRequest;
 use App\Models\Community;
+use App\Models\Topic;
 
 class CommunityController extends Controller
 {
@@ -25,7 +26,8 @@ class CommunityController extends Controller
      */
     public function create()
     {
-        return view('communities.create');
+        $topics = Topic::all();
+        return view('communities.create', compact('topics'));
     }
 
     /**

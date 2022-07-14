@@ -45,6 +45,19 @@
                                 </div>
                             </div>
 
+
+                            <div class="row mb-3">
+                                <label for="topics"
+                                       class="col-md-4 col-form-label text-md-end">{{ __('Topics') }}</label>
+
+                                <div class="col-md-6">
+                                    @foreach($topics as $topic)
+                                        <input type="checkbox" name="topics[]" id="topics" value="{{$topic->id}}"/>{{$topic->name}}
+                                        <br>
+                                    @endforeach
+                                </div>
+                            </div>
+
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
