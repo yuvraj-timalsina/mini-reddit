@@ -13,7 +13,7 @@ class UpdateCommunityRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class UpdateCommunityRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|min:3|unique:communities,name,'.$this->community->id,
+            'description' => 'required|max:500'
         ];
     }
 }

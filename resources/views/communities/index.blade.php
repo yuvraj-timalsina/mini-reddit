@@ -8,6 +8,10 @@
                     <div class="card-header">{{ __('My Communities') }}</div>
 
                     <div class="card-body">
+                        @if(session('message'))
+                            <div class="alert {{session('alert')}}">{{session('message')}}</div>
+                            <br/>
+                        @endif
                         <a href="{{route('communities.create')}}" class="btn btn-primary">New Community</a>
                         <br/> <br/>
                         <table class="table">
@@ -27,7 +31,15 @@
                                     </td>
                                     <td>
                                         <a href="{{route('communities.edit', $community)}}"
-                                           class="btn btn-primary">Edit</a>
+                                           class="btn btn-sm btn-primary">Edit</a>
+                                        <form action="{{route('communities.destroy', $community)}}" method="POST"
+                                              class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Are You Sure?')">Delete
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

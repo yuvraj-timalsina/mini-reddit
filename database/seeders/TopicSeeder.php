@@ -15,11 +15,11 @@ class TopicSeeder extends Seeder
      */
     public function run()
     {
-        $topics = ['Programming', 'Design', 'SEO', 'Business', 'Random'];
+        $names = ['Programming', 'Design', 'SEO', 'Business', 'Random'];
 
-        foreach ($topics as $topic) {
+        foreach ($names as $name) {
             Topic::create([
-                'name' => $topic
+                'name' => $name
             ]);
         }
 //        Topic::factory(10)->create();
