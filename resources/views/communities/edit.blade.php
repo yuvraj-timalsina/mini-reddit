@@ -19,7 +19,7 @@
                                 <div class="col-md-6">
                                     <input id="name" type="text"
                                            class="form-control @error('name') is-invalid @enderror" name="name"
-                                           value="{{ old('name', $community->name )}}" autocomplete="name" autofocus>
+                                           value="{{ old('name', $community->name )}}" autofocus>
 
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
