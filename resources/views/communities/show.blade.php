@@ -13,7 +13,7 @@
                             Post</a>
                         <br/><br/>
                         @forelse($posts as $post)
-                            <a href="{{route('communities.show',[$community, $post])}}"><h2>{{$post->title}}</h2></a>
+                            <a href="{{route('communities.posts.show',[$community, $post])}}"><h2>{{$post->title}}</h2></a>
                             <p>{{Str::words($post->post_text, 10)}}</p>
                             <hr/>
                         @empty
