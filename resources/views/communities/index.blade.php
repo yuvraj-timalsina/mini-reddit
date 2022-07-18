@@ -13,7 +13,7 @@
                             <br/>
                         @endif
                         <a href="{{route('communities.create')}}" class="btn btn-primary">New Community</a>
-                        <br/> <br/>
+                        <br/><br/>
                         <table class="table">
                             <thead>
                             <tr>

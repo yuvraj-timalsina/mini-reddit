@@ -15,7 +15,7 @@ class CommunityPostController extends Controller
      */
     public function index(Community $community)
     {
-        $posts= $community->posts()->latest('id')->paginate(10);
+        //
     }
 
     /**
