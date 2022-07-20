@@ -26,7 +26,8 @@ class UpdatePostRequest extends FormRequest
         return [
             'title'=>'required|unique:posts,title,'.$this->post->id,
             'post_text'=>'string',
-            'post_url'=>'url'
+            'post_url'=>'url',
+            'post_image'=>'image'
         ];
     }
 }

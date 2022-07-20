@@ -27,6 +27,7 @@ class StorePostRequest extends FormRequest
             'title'=>'required',
             'post_text'=>'string',
             'post_url'=>'url',
+            'post_image'=>'image'
         ];
     }
 }
