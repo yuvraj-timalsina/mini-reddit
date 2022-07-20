@@ -24,7 +24,7 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>'required',
+            'title'=>'required|unique:posts,title,'.$this->post->id,
             'post_text'=>'string',
             'post_url'=>'url'
         ];

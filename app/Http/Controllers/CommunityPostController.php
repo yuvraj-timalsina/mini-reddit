@@ -6,6 +6,7 @@ use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Community;
 use App\Models\Post;
+use Intervention\Image\Facades\Image;
 
 class CommunityPostController extends Controller
 {
@@ -27,12 +28,22 @@ class CommunityPostController extends Controller
      */
     public function store(StorePostRequest $request, Community $community)
     {
-        $community->posts()->create([
-            'user_id' => auth()->id(),
-            'title' => $request->title,
-            'post_text' => $request->post_text ?? null,
-            'post_url' => $request->post_url ?? null,
-        ]);
+//        $community->posts()->create([
+//            'user_id' => auth()->id(),
+//            'title' => $request->title,
+//            'post_text' => $request->post_text ?? null,
+//            'post_url' => $request->post_url ?? null,
+//        ]);
+
+
+        $data = $community->posts()->create($request->validated() + ['user_id' => auth()->id()]);
+
+        if ($request->hasFile('post_image')) {
+
+           $data->post_image = $request->post_image->store('posts');
+            $data->save();
+        }
+
 
         return to_route('communities.show', $community);
     }
@@ -45,6 +56,23 @@ class CommunityPostController extends Controller
     public function create(Community $community)
     {
         return view('posts.create', compact('community'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdatePostRequest $request, Community $community, Post $post)
+    {
+        if ($post->user_id != auth()->id()) {
+            abort(403);
+        }
+        $post->update($request->validated());
+
+        return to_route('communities.posts.show', [$community, $post]);
     }
 
     /**
@@ -71,23 +99,6 @@ class CommunityPostController extends Controller
         }
 
         return view('posts.edit', compact('community', 'post'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePostRequest $request, Community $community, Post $post)
-    {
-        if ($post->user_id != auth()->id()) {
-            abort(403);
-        }
-        $post->update($request->validated());
-
-        return to_route('communities.posts.show', [$community, $post]);
     }
 
     /**

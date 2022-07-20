@@ -13,6 +13,12 @@
                                 <a href="{{$post->post_url}}" target="_blank">{{$post->post_url}}</a>
                             </div>
                         @endif
+
+                        @if($post->post_image !='')
+                            <img src="{{asset('storage/' . $post->post_image)}}" class="w-25" alt=""/>
+                            <br/><br/>
+                        @endif
+
                         {{$post->post_text}}
 
                         @auth
@@ -20,14 +26,14 @@
                                 <hr/>
                                 <a href="{{route('communities.posts.edit', [$community, $post])}}"
                                    class="btn btn-sm btn-primary">Edit Post</a>
-                                    <form action="{{route('communities.posts.destroy', [$community, $post])}}" method="POST"
-                                          class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Are You Sure?')">Delete Post
-                                        </button>
-                                    </form>
+                                <form action="{{route('communities.posts.destroy', [$community, $post])}}" method="POST"
+                                      class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are You Sure?')">Delete Post
+                                    </button>
+                                </form>
                             @endif
                         @endauth
 
