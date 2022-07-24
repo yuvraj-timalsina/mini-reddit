@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('post_text')->nullable();
             $table->text('post_image')->nullable();
             $table->text('post_url')->nullable();
+            $table->integer('votes')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -6,6 +6,7 @@ use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Community;
 use App\Models\Post;
+use App\Models\PostVote;
 use Intervention\Image\Facades\Image;
 
 class CommunityPostController extends Controller
@@ -117,5 +118,21 @@ class CommunityPostController extends Controller
         $post->delete();
 
         return to_route('communities.show', [$community]);
+    }
+
+    public function vote($post_id, $vote)
+    {
+        $post = Post::with('community')->findOrFail($post_id);
+        if (!PostVote::with('post_id', $post_id)->where('user_id', auth()->id())->count()) {
+            PostVote::create([
+                'post_id' => $post_id,
+                'user_id' => auth()->id(),
+                'vote' => $vote
+            ]);
+
+            $post->increment('votes', $vote);
+        }
+
+        return to_route('communities.show', $post->community);
     }
 }

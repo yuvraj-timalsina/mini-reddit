@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -42,10 +43,16 @@ class Post extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['community_id', 'user_id', 'title', 'post_text', 'post_url', 'post_image',];
+    protected $fillable = ['community_id', 'user_id', 'title', 'post_text', 'post_url', 'post_image', 'votes'];
+
+    public function community(): BelongsTo
+    {
+        return $this->belongsTo(Community::class);
+    }
 
     /**
      * Delete Post Image from Storage.
+     *
      * @return void
      */
     public function deleteImage()
