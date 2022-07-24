@@ -8,13 +8,13 @@
                     <div class="card-header">{{ $post->title }}</div>
 
                     <div class="card-body">
-                        @if($post->post_url !='')
+                        @if(!empty($post->post_url))
                             <div class="mb-2">
                                 <a href="{{$post->post_url}}" target="_blank">{{$post->post_url}}</a>
                             </div>
                         @endif
 
-                        @if($post->post_image !='')
+                        @if(!empty($post->post_image))
                             <img src="{{asset('storage/' . $post->post_image)}}" class="w-25" alt=""/>
                             <br/><br/>
                         @endif
