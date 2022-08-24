@@ -6,13 +6,17 @@ use App\Http\Requests\Community\StoreCommunityRequest;
 use App\Http\Requests\Community\UpdateCommunityRequest;
 use App\Models\Community;
 use App\Models\Topic;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class CommunityController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -24,8 +28,8 @@ class CommunityController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreCommunityRequest $request
-     * @return \Illuminate\Http\Response
+     * @param StoreCommunityRequest $request
+     * @return RedirectResponse
      */
     public function store(StoreCommunityRequest $request)
     {
@@ -38,7 +42,7 @@ class CommunityController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -49,8 +53,8 @@ class CommunityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Community $community
-     * @return \Illuminate\Http\Response
+     * @param Community $community
+     * @return Application|Factory|View
      */
     public function show(Community $community)
     {
@@ -69,8 +73,8 @@ class CommunityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Community $community
-     * @return \Illuminate\Http\Response
+     * @param Community $community
+     * @return Application|Factory|View
      */
     public function edit(Community $community)
     {
@@ -85,9 +89,9 @@ class CommunityController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateCommunityRequest $request
-     * @param \App\Models\Community $community
-     * @return \Illuminate\Http\Response
+     * @param UpdateCommunityRequest $request
+     * @param Community $community
+     * @return RedirectResponse
      */
     public function update(UpdateCommunityRequest $request, Community $community)
     {
@@ -104,8 +108,8 @@ class CommunityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Community $community
-     * @return \Illuminate\Http\Response
+     * @param Community $community
+     * @return RedirectResponse
      */
     public function destroy(Community $community)
     {
@@ -115,6 +119,7 @@ class CommunityController extends Controller
 
         $community->delete();
 
-        return to_route('communities.index')->with(['alert' => 'alert-danger', 'message' => 'Successfully Deleted!']);
+        return to_route('communities.index')
+            ->with(['alert' => 'alert-danger', 'message' => 'Successfully Deleted!']);
     }
 }
