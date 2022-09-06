@@ -7,26 +7,23 @@ use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Community;
 use App\Models\Post;
 use App\Models\PostVote;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Storage;
 
 class CommunityPostController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Community $community)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param UpdatePostRequest $request
+     * @param Community $community
+     * @param Post $post
+     * @return RedirectResponse
      */
     public function update(UpdatePostRequest $request, Community $community, Post $post)
     {
@@ -38,7 +35,7 @@ class CommunityPostController extends Controller
 
         if ($request->hasFile('post_image')) {
             $data['post_image'] = $request->post_image->store('posts');
-            if ($post->post_image != null && \Storage::disk('public')->exists($post->post_image)) {
+            if ($post->post_image != null && Storage::disk('public')->exists($post->post_image)) {
                 $post->deleteImage();
             }
         }
@@ -50,8 +47,9 @@ class CommunityPostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param StorePostRequest $request
+     * @param Community $community
+     * @return RedirectResponse
      */
     public function store(StorePostRequest $request, Community $community)
     {
@@ -70,7 +68,7 @@ class CommunityPostController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create(Community $community)
     {
@@ -80,8 +78,9 @@ class CommunityPostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Community $community
+     * @param Post $post
+     * @return Application|Factory|View
      */
     public function show(Community $community, Post $post)
     {
@@ -92,8 +91,9 @@ class CommunityPostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Community $community
+     * @param Post $post
+     * @return Application|Factory|View
      */
     public function edit(Community $community, Post $post)
     {
@@ -107,8 +107,9 @@ class CommunityPostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Community $community
+     * @param Post $post
+     * @return RedirectResponse
      */
     public function destroy(Community $community, Post $post)
     {
@@ -125,15 +126,14 @@ class CommunityPostController extends Controller
     {
         $post = Post::with('community')->findOrFail($post_id);
 
-            if(!PostVote::where([['post_id', $post_id],['user_id', auth()->id()]])->count()
-            && in_array($vote,[-1, 1]) && $post->user_id!=auth()->id()) {
+        if (!PostVote::where([['post_id', $post_id], ['user_id', auth()->id()]])->count()
+            && in_array($vote, [-1, 1]) && $post->user_id != auth()->id()) {
             PostVote::create([
                 'post_id' => $post_id,
                 'user_id' => auth()->id(),
                 'vote' => $vote
             ]);
 
-        $post->increment('votes', $vote);
         }
 
         return to_route('communities.show', $post->community);
