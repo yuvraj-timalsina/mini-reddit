@@ -16,8 +16,12 @@ class CommunityFactory extends Factory
      */
     public function definition()
     {
+        $name = fake()->text(30);
         return [
-            //
+            'name' => $name,
+            'user_id' => rand(1,100),
+            'description' => fake()->text(200),
+            'slug'=> \Str::slug($name)
         ];
     }
 }
