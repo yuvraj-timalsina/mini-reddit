@@ -11,7 +11,7 @@ class UpdatePostRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,10 +21,10 @@ class UpdatePostRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'title'=>'required|unique:posts,'.$this->post->id,
+            'title'=>'required|unique:posts,title,'.$this->post->id,
             'post_text'=>'string',
             'post_url'=>'url',
             'post_image'=>'image'

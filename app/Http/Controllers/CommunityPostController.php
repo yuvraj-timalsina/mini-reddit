@@ -12,7 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Gate;
 use Storage;
 
 class CommunityPostController extends Controller
@@ -27,7 +27,7 @@ class CommunityPostController extends Controller
      */
     public function update(UpdatePostRequest $request, Community $community, Post $post)
     {
-        if ($post->user_id != auth()->id()) {
+        if (Gate::denies('edit-post', $post)) {
             abort(403);
         }
 
@@ -56,12 +56,9 @@ class CommunityPostController extends Controller
         $data = $community->posts()->create($request->validated() + ['user_id' => auth()->id()]);
 
         if ($request->hasFile('post_image')) {
-
             $data->post_image = $request->post_image->store('posts');
             $data->save();
         }
-
-
         return to_route('communities.show', $community);
     }
 
@@ -97,7 +94,7 @@ class CommunityPostController extends Controller
      */
     public function edit(Community $community, Post $post)
     {
-        if ($post->user_id != auth()->id()) {
+        if (Gate::denies('edit-post', $post)) {
             abort(403);
         }
 
@@ -113,10 +110,9 @@ class CommunityPostController extends Controller
      */
     public function destroy(Community $community, Post $post)
     {
-        if (!in_array(auth()->id(), [$post->user_id, $community->user_id])) {
+        if (Gate::denies('delete-post', $post)) {
             abort(403);
         }
-
         $post->delete();
 
         return to_route('communities.show', [$community]);
@@ -145,8 +141,7 @@ class CommunityPostController extends Controller
     /**
      * Report the specified resource from storage.
      *
-     * @param Community $community
-     * @param Post $post
+     * @param $post_id
      * @return RedirectResponse
      */
     public function report($post_id)
