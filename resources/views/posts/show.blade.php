@@ -6,6 +6,11 @@
         <div class="card-header">{{ $post->title }}</div>
 
         <div class="card-body">
+
+            @if(session('message'))
+                <div class="alert alert-info">{{session('message')}}</div>
+            @endif
+
             @if(!empty($post->post_url))
                 <div class="mb-2">
                     <a href="{{$post->post_url}}" target="_blank">{{$post->post_url}}</a>
@@ -43,6 +48,10 @@
                     <hr/>
                     <a href="{{route('communities.posts.edit', [$community, $post])}}"
                        class="btn btn-sm btn-primary">Edit Post</a>
+                @endif
+
+                @if(in_array(auth()->id(),[$post->user_id, $post->community->user_id]))
+
                     <form action="{{route('communities.posts.destroy', [$community, $post])}}" method="POST"
                           class="d-inline">
                         @csrf
@@ -51,9 +60,18 @@
                                 onclick="return confirm('Are You Sure?')">Delete Post
                         </button>
                     </form>
+                @else
+                    <hr/>
+                    <form action="{{route('post.report', $post->id)}}" method="POST"
+                          class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are You Sure?')">Report Post as Inappropriate
+                        </button>
+                    </form>
                 @endif
-            @endauth
 
+            @endauth
         </div>
     </div>
 

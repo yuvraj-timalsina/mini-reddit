@@ -7,11 +7,11 @@ use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Community;
 use App\Models\Post;
 use App\Models\PostVote;
+use App\Notifications\PostReportNotification;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Storage;
 
@@ -113,7 +113,7 @@ class CommunityPostController extends Controller
      */
     public function destroy(Community $community, Post $post)
     {
-        if ($post->user_id != auth()->id()) {
+        if (!in_array(auth()->id(), [$post->user_id, $community->user_id])) {
             abort(403);
         }
 
@@ -122,6 +122,11 @@ class CommunityPostController extends Controller
         return to_route('communities.show', [$community]);
     }
 
+    /**
+     * @param $post_id
+     * @param $vote
+     * @return RedirectResponse
+     */
     public function vote($post_id, $vote)
     {
         $post = Post::with('community')->findOrFail($post_id);
@@ -133,9 +138,24 @@ class CommunityPostController extends Controller
                 'user_id' => auth()->id(),
                 'vote' => $vote
             ]);
-
         }
-
         return to_route('communities.show', $post->community);
+    }
+
+    /**
+     * Report the specified resource from storage.
+     *
+     * @param Community $community
+     * @param Post $post
+     * @return RedirectResponse
+     */
+    public function report($post_id)
+    {
+        $post = Post::with('community.user')->findOrFail($post_id);
+
+        $post->community->user->notify(new PostReportNotification($post));
+
+        return to_route('communities.posts.show', [$post->community, $post])
+            ->with('message', 'Your report has been sent!');
     }
 }
