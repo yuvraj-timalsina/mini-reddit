@@ -25,15 +25,8 @@
 
                         @forelse($posts as $post)
                             <div class="row">
-                                <div class="col-1 text-center">
-                                    <div>
-                                        <a href="{{route('post.vote', [$post->id, 1])}}"><i
-                                                class="fa-solid fa-sort-up fa-2x"></i></a>
-                                    </div>
-                                    <h2 class="fw-bold">{{$post->votes}}</h2>
-                                    <div><a href="{{route('post.vote', [$post->id, -1])}}"><i
-                                                class="fa-solid fa-sort-down fa-2x"></i></a></div>
-                                </div>
+                                @livewire('post-votes',['postId'=>$post->id])
+
                                 <div class="col-11">
                                     <a href="{{route('communities.posts.show',[$community, $post])}}">
                                         <h2>{{$post->title}}</h2></a>

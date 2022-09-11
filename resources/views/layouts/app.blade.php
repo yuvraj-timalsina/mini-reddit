@@ -1,5 +1,4 @@
-@php use App\Models\Post; @endphp
-    <!doctype html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -19,6 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @livewireStyles
 </head>
 <body>
 <div id="app">
@@ -106,7 +106,7 @@
                         <div class="card-body">
                             @foreach($newestCommunities as $community)
                                 <a href="{{route('communities.show',$community)}}">{{$community->name}}</a>
-                            ({{$community->posts_count}}) posts
+                                ({{$community->posts_count}}) posts
                                 <div class="mt-1">{{$community->created_at->diffForHumans()}}</div>
                                 <hr/>
                             @endforeach
@@ -126,5 +126,6 @@
         $('.select2').select2();
     });
 </script>
+@livewireScripts
 </body>
 </html>
