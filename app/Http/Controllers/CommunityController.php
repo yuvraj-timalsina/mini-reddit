@@ -53,12 +53,13 @@ class CommunityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Community $community
+     * @param $slug
      * @return Application|Factory|View
      */
-    public function show(Community $community)
+    public function show($slug)
     {
-        $query = $community->posts();
+        $community=Community::where('slug', $slug)->firstOrFail();
+        $query = $community->posts()->with('postVotes');
 
         if (request('sort', '') == 'popular') {
             $query->orderBy('votes', 'DESC');
