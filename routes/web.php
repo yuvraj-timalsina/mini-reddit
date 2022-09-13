@@ -13,9 +13,9 @@ Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resources([
-        'communities'=> CommunityController::class,
-        'communities.posts'=>CommunityPostController::class,
-        'posts.comments'=>PostCommentController::class
+        'communities' => CommunityController::class,
+        'communities.posts' => CommunityPostController::class,
+        'posts.comments' => PostCommentController::class
     ]);
     Route::get('posts/{post_id}/vote/{vote}', [CommunityPostController::class, 'vote'])->name('post.vote');
     Route::post('posts/{post_id}/report', [CommunityPostController::class, 'report'])->name('post.report');
