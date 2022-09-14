@@ -28,7 +28,7 @@
                                 @livewire('post-votes',['post'=>$post])
 
                                 <div class="col-11">
-                                    <a href="{{route('communities.posts.show',[$community, $post])}}">
+                                    <a href="{{route('communities.posts.show',$post)}}">
                                         <h2>{{$post->title}}</h2></a>
                                     <p>{{$post->created_at->diffForHumans()}}</p>
                                     <p>{{Str::words($post->post_text, 10)}}</p>

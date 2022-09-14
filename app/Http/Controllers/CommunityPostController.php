@@ -75,14 +75,13 @@ class CommunityPostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Community $community
      * @param Post $post
      * @return Application|Factory|View
      */
-    public function show(Community $community, Post $post)
+    public function show($post)
     {
-        $post->load('comments.user');
-        return view('posts.show', compact('community', 'post'));
+        $post =Post::with('comments.user', 'community')->findOrFail($post);
+        return view('posts.show', compact( 'post'));
     }
 
     /**
@@ -150,7 +149,7 @@ class CommunityPostController extends Controller
 
         $post->community->user->notify(new PostReportNotification($post));
 
-        return to_route('communities.posts.show', [$post->community, $post])
+        return to_route('communities.posts.show', $post)
             ->with('message', 'Your report has been sent!');
     }
 }

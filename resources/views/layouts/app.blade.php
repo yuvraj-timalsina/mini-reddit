@@ -94,7 +94,7 @@
 
                         <div class="card-body">
                             @foreach($newestPosts as $post)
-                                <a href="{{route('communities.posts.show',[$post->community, $post])}}">{{$post->title}}</a>
+                                <a href="{{route('communities.posts.show',[$post])}}">{{$post->title}}</a>
                                 <div class="mt-1">{{$post->created_at->diffForHumans()}}</div>
                                 <hr/>
                             @endforeach
