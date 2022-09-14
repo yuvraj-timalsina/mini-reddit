@@ -41,7 +41,7 @@ class CommunityPostController extends Controller
         }
         $post->update($data);
 
-        return to_route('communities.posts.show', [$community, $post]);
+        return to_route('communities.posts.show', $post);
     }
 
     /**
@@ -114,7 +114,7 @@ class CommunityPostController extends Controller
         }
         $post->delete();
 
-        return to_route('communities.show', [$community]);
+        return to_route('communities.show', $community);
     }
 
     /**

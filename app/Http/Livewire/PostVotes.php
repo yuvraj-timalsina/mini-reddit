@@ -24,8 +24,9 @@ class PostVotes extends Component
     {
         return view('livewire.post-votes');
     }
+
     public function vote($vote) {
-        if (!$this->post->postVotes->where('user_id', auth()->id())->count()
+        if (auth()->check() && !$this->post->postVotes->where('user_id', auth()->id())->count()
             && in_array($vote, [-1, 1]) && $this->post->user_id != auth()->id()) {
             PostVote::create([
                 'post_id' => $this->post->id,

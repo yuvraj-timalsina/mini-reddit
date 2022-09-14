@@ -11,13 +11,15 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Auth::routes(['verify' => true]);
 
-Route::get('communities/{slug}',
+Route::get('c/{slug}',
     [CommunityController::class, 'show'])
     ->name('communities.show');
 
-Route::get('posts/{post}',
+Route::get('p/{post}',
     [CommunityPostController::class, 'show'])
     ->name('communities.posts.show');
+
+
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resources([
         'communities' => CommunityController::class,
